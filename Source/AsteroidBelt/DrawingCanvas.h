@@ -22,7 +22,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = DrawingTools)
 	void UpdateCanvas();
 	UFUNCTION(BlueprintCallable, Category = DrawingTools)
-	void ClearCanvas();
+	void ClearCanvas(const FColor& Color);
 
 	UFUNCTION(BlueprintCallable, Category = DrawingTools)
 	void InitializeDrawingTools(const int32 brushRadius);

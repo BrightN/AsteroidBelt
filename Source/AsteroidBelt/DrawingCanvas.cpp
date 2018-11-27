@@ -36,7 +36,7 @@ void UDrawingCanvas::InitializeCanvas(const int32 pixelsH, const int32 pixelsV)
 	bufferSize = canvasWidth * canvasHeight * bytesPerPixel;
 	canvasPixelData = std::unique_ptr<uint8[]>(new uint8[bufferSize]);
 
-	ClearCanvas();
+	ClearCanvas(FColor::Black);
 }
 
 void UDrawingCanvas::InitializeDrawingTools(const int32 brushRadius)
@@ -92,12 +92,12 @@ void UDrawingCanvas::DrawDot(const int32 pixelCoordX, const int32 pixelCoordY)
 	UpdateCanvas();
 }
 
-void UDrawingCanvas::ClearCanvas()
+void UDrawingCanvas::ClearCanvas(const FColor& Color)
 {
 	uint8* canvasPixelPtr = canvasPixelData.get();
 	for (int i = 0; i < canvasWidth * canvasHeight; ++i)
 	{
-		setPixelColor(canvasPixelPtr, 255, 255, 255, 255); //white
+		setPixelColor(canvasPixelPtr, Color.R, Color.G, Color.B, Color.A);
 		canvasPixelPtr += bytesPerPixel;
 	}
 	UpdateCanvas();
@@ -148,12 +148,14 @@ void UDrawingCanvas::DrawDecal(const int32 pixelCoordX, const int32 pixelCoordY)
 {
 	uint8* canvasPixelPtr = canvasPixelData.get();
 	const uint8* canvasDecalPixelPtr = canvasDecalImage.get();
-	for (int px = -(decalWidth / 2); px < (decalWidth / 2); ++px)
+	//for (int px = -(decalWidth / 2); px < (decalWidth / 2); ++px)
+	for (int px = 0; px < decalWidth; ++px)
 	{
-		for (int py = -(decalHeight / 2); py < (decalHeight / 2); ++py)
+		//for (int py = -(decalHeight / 2); py < (decalHeight / 2); ++py)
+		for (int py = 0; py < decalHeight; ++py)
 		{
-			int32 tbx = px + decalWidth / 2;
-			int32 tby = py + decalHeight / 2;
+			int32 tbx = px;// +decalWidth / 2;
+			int32 tby = py;// +decalHeight / 2;
 
 			canvasDecalPixelPtr = canvasDecalImage.get() + (tbx + tby * decalWidth) * bytesPerPixel;
 			if (*(canvasDecalPixelPtr + 3) == 255) // check the alpha value of the pixel of the brush mask
